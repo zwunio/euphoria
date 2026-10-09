@@ -4673,30 +4673,42 @@ function library:slider(properties)
 		end
 	end
 
+	library:connection(uis.InputBegan, function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			local pos = input.Position - vec2(0, gui_offset)
+			local abs_pos = slider_inline.AbsolutePosition
+			local abs_size = slider_inline.AbsoluteSize
+
+			if pos.X >= abs_pos.X and pos.X <= abs_pos.X + abs_size.X
+				and pos.Y >= abs_pos.Y and pos.Y <= abs_pos.Y + abs_size.Y then
+				cfg.dragging = true
+
+				local size_x = (pos.X - abs_pos.X) / abs_size.X
+				cfg.set(((cfg.max - cfg.min) * size_x) + cfg.min)
+			end
+		end
+	end)
+
 	library:connection(uis.InputChanged, function(input)
-		if cfg.dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-			local size_x = (input.Position.X - slider.AbsolutePosition.X) / slider.AbsoluteSize.X
+		if cfg.dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+			local size_x = (input.Position.X - slider_inline.AbsolutePosition.X) / slider_inline.AbsoluteSize.X
 			local value = ((cfg.max - cfg.min) * size_x) + cfg.min
 			cfg.set(value)
 		end
 	end)
 
 	library:connection(uis.InputEnded, function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 			cfg.dragging = false
 		end
 	end)
 
-	slider_inline.MouseButton1Down:Connect(function()
-		cfg.dragging = true
-	end)
-
-	add.MouseButton1Down:Connect(function()
+	add.MouseButton1Click:Connect(function()
 		cfg.value += cfg.intervals
 		cfg.set(cfg.value)
 	end)
 
-	sub.MouseButton1Down:Connect(function()
+	sub.MouseButton1Click:Connect(function()
 		cfg.value -= cfg.intervals
 		cfg.set(cfg.value)
 	end)
