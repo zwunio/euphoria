@@ -498,7 +498,6 @@ function library:window(properties)
 	local __holder = library:create("Frame", {
 		Parent = library.gui,
 		Name = "",
-			Visible = false,
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 20, 0, 20),
 		BorderColor3 = Color3.fromRGB(19, 19, 19),
@@ -4676,15 +4675,10 @@ function library:slider(properties)
 
 	library:connection(uis.InputBegan, function(input)
 		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-			local pos = input.Position - vec2(0, gui_offset)
-			local abs_pos = slider_inline.AbsolutePosition
-			local abs_size = slider_inline.AbsoluteSize
-
-			if pos.X >= abs_pos.X and pos.X <= abs_pos.X + abs_size.X
-				and pos.Y >= abs_pos.Y and pos.Y <= abs_pos.Y + abs_size.Y then
+			if table.find(lp.PlayerGui:GetGuiObjectsAtPosition(input.Position.X, input.Position.Y), slider_inline) then
 				cfg.dragging = true
 
-				local size_x = (pos.X - abs_pos.X) / abs_size.X
+				local size_x = (input.Position.X - slider_inline.AbsolutePosition.X) / slider_inline.AbsoluteSize.X
 				cfg.set(((cfg.max - cfg.min) * size_x) + cfg.min)
 			end
 		end
