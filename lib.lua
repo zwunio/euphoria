@@ -498,6 +498,7 @@ function library:window(properties)
 	local __holder = library:create("Frame", {
 		Parent = library.gui,
 		Name = "",
+			Visible = false,
 		BackgroundTransparency = 1,
 		Position = UDim2.new(0, 20, 0, 20),
 		BorderColor3 = Color3.fromRGB(19, 19, 19),
