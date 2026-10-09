@@ -4673,30 +4673,34 @@ function library:slider(properties)
 		end
 	end
 
-	library:connection(uis.InputBegan, function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-			if table.find(lp.PlayerGui:GetGuiObjectsAtPosition(input.Position.X, input.Position.Y), slider_inline) then
-				cfg.dragging = true
+	slider_inline.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		cfg.dragging = true
 
-				local size_x = (input.Position.X - slider_inline.AbsolutePosition.X) / slider_inline.AbsoluteSize.X
-				cfg.set(((cfg.max - cfg.min) * size_x) + cfg.min)
-			end
-		end
-	end)
+		local size_x = math.clamp(
+			(input.Position.X - slider_inline.AbsolutePosition.X) / slider_inline.AbsoluteSize.X,
+			0, 1
+		)
+		cfg.set(((cfg.max - cfg.min) * size_x) + cfg.min)
+	end
+end)
 
-	library:connection(uis.InputChanged, function(input)
-		if cfg.dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-			local size_x = (input.Position.X - slider_inline.AbsolutePosition.X) / slider_inline.AbsoluteSize.X
-			local value = ((cfg.max - cfg.min) * size_x) + cfg.min
-			cfg.set(value)
-		end
-	end)
+library:connection(uis.InputChanged, function(input)
+	if cfg.dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+		local size_x = math.clamp(
+			(input.Position.X - slider_inline.AbsolutePosition.X) / slider_inline.AbsoluteSize.X,
+			0, 1
+		)
+		local value = ((cfg.max - cfg.min) * size_x) + cfg.min
+		cfg.set(value)
+	end
+end)
 
-	library:connection(uis.InputEnded, function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-			cfg.dragging = false
-		end
-	end)
+library:connection(uis.InputEnded, function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		cfg.dragging = false
+	end
+end)
 
 	add.MouseButton1Click:Connect(function()
 		cfg.value += cfg.intervals
