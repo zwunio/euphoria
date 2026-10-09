@@ -60,7 +60,7 @@ getgenv().library = {
 	keybind_path,
 	panel_open = false,
 
-	directory = "solvent",
+	directory = "euphoria",
 	folders = {
 		"/fonts",
 		CONFIG_FOLDER,
@@ -493,7 +493,7 @@ function library:window(properties)
 		size = properties.Size or properties.size or dim2(0, 500, 0, 650),
 	}
 
-	local animated_text = library:animation("solvent")
+	local animated_text = library:animation("euphoria")
 
 	local __holder = library:create("Frame", {
 		Parent = library.gui,
