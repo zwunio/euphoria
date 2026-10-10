@@ -2299,6 +2299,7 @@ end)
 		playerlist.Visible = false
 	end
 
+	pcall(function()
 	if uis.TouchEnabled then
 		local mobile_holder = library:create("Frame", {
 			Parent = library.gui,
@@ -2423,6 +2424,7 @@ end)
 			end
 		end)
 	end
+	end)
 
 	return setmetatable(cfg, library)
 end
