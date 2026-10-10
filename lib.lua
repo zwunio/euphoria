@@ -493,8 +493,6 @@ function library:window(properties)
 		size = properties.Size or properties.size or dim2(0, 500, 0, 650),
 	}
 
-	local animated_text = library:animation("euphoria")
-
 	local __holder = library:create("Frame", {
 		Parent = library.gui,
 		Name = "",
@@ -511,7 +509,7 @@ function library:window(properties)
 		Name = "",
 		Active = true,
 		BorderColor3 = Color3.fromRGB(0, 0, 0),
-		Size = UDim2.new(0, ((#animated_text / 2) * 7) + 25, 0, 40),
+		Size = UDim2.new(0, 90, 0, 40),
 		BackgroundColor3 = Color3.fromRGB(40, 40, 40),
 	})
 	library:make_draggable(inline1)
@@ -582,7 +580,7 @@ function library:window(properties)
 		FontFace = library.font,
 		TextColor3 = Color3.fromRGB(170, 170, 170),
 		BorderColor3 = Color3.fromRGB(0, 0, 0),
-		Text = "suicide",
+		Text = "euphoria",
 		TextStrokeTransparency = 0.5,
 		Size = UDim2.new(1, 0, 1, 0),
 		Position = UDim2.new(0, 0, 0, 0),
@@ -621,18 +619,6 @@ function library:window(properties)
 	})
 
 	library:apply_theme(glow, "accent", "ImageColor3")
-
-	task.spawn(function()
-		while true do
-			if __holder.Visible then
-				for i = 1, #animated_text do
-					task.wait(0.2)
-					name.Text = animated_text[i]
-				end
-			end
-			task.wait(0.2)
-		end
-	end)
 
 	local inline1 = library:create("Frame", {
 		Parent = library.gui,
@@ -4674,33 +4660,33 @@ function library:slider(properties)
 	end
 
 	slider_inline.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-		cfg.dragging = true
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			cfg.dragging = true
 
-		local size_x = math.clamp(
-			(input.Position.X - slider_inline.AbsolutePosition.X) / slider_inline.AbsoluteSize.X,
-			0, 1
-		)
-		cfg.set(((cfg.max - cfg.min) * size_x) + cfg.min)
-	end
-end)
+			local size_x = math.clamp(
+				(input.Position.X - slider_inline.AbsolutePosition.X) / slider_inline.AbsoluteSize.X,
+				0, 1
+			)
+			cfg.set(((cfg.max - cfg.min) * size_x) + cfg.min)
+		end
+	end)
 
-library:connection(uis.InputChanged, function(input)
-	if cfg.dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-		local size_x = math.clamp(
-			(input.Position.X - slider_inline.AbsolutePosition.X) / slider_inline.AbsoluteSize.X,
-			0, 1
-		)
-		local value = ((cfg.max - cfg.min) * size_x) + cfg.min
-		cfg.set(value)
-	end
-end)
+	library:connection(uis.InputChanged, function(input)
+		if cfg.dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+			local size_x = math.clamp(
+				(input.Position.X - slider_inline.AbsolutePosition.X) / slider_inline.AbsoluteSize.X,
+				0, 1
+			)
+			local value = ((cfg.max - cfg.min) * size_x) + cfg.min
+			cfg.set(value)
+		end
+	end)
 
-library:connection(uis.InputEnded, function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-		cfg.dragging = false
-	end
-end)
+	library:connection(uis.InputEnded, function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			cfg.dragging = false
+		end
+	end)
 
 	add.MouseButton1Click:Connect(function()
 		cfg.value += cfg.intervals
@@ -5661,51 +5647,44 @@ function library:colorpicker(properties)
 		end
 	end)
 
-	function cfg.update_color()
-		local mouse = uis:GetMouseLocation()
+	function cfg.update_color(pos)
+		if not pos then
+			return
+		end
+
+		local p = vec2(pos.X, pos.Y)
 
 		if dragging_sat then
-			s = math.clamp(
-				(vec2(mouse.X, mouse.Y - gui_offset) - sat_white.AbsolutePosition).X / sat_white.AbsoluteSize.X,
-				0,
-				1
-			)
-			v = 1
-				- math.clamp(
-					(vec2(mouse.X, mouse.Y - gui_offset) - sat_black.AbsolutePosition).Y / sat_black.AbsoluteSize.Y,
-					0,
-					1
-				)
+			s = math.clamp((p.X - sat_white.AbsolutePosition.X) / sat_white.AbsoluteSize.X, 0, 1)
+			v = 1 - math.clamp((p.Y - sat_black.AbsolutePosition.Y) / sat_black.AbsoluteSize.Y, 0, 1)
 		elseif dragging_hue then
-			h = 1
-				- math.clamp(
-					1
-						- (vec2(mouse.X, mouse.Y - gui_offset) - hue_inline.AbsolutePosition).X
-							/ hue_inline.AbsoluteSize.X,
-					0,
-					1
-				)
+			h = math.clamp((p.X - hue_inline.AbsolutePosition.X) / hue_inline.AbsoluteSize.X, 0, 1)
 		elseif dragging_alpha then
-			a = math.clamp(
-				(vec2(mouse.X, mouse.Y - gui_offset) - alpha_inline.AbsolutePosition).X / alpha_inline.AbsoluteSize.X,
-				0,
-				1
-			)
+			a = math.clamp((p.X - alpha_inline.AbsolutePosition.X) / alpha_inline.AbsoluteSize.X, 0, 1)
 		end
 
 		cfg.set(nil, nil)
 	end
 
-	alpha_inline.MouseButton1Down:Connect(function()
-		dragging_alpha = true
+	sat_inline.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging_sat = true
+			cfg.update_color(input.Position)
+		end
 	end)
 
-	hue_inline.MouseButton1Down:Connect(function()
-		dragging_hue = true
+	hue_inline.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging_hue = true
+			cfg.update_color(input.Position)
+		end
 	end)
 
-	sat_inline.MouseButton1Down:Connect(function()
-		dragging_sat = true
+	alpha_inline.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging_alpha = true
+			cfg.update_color(input.Position)
+		end
 	end)
 
 	cfg.saved_color = hsv(h, s, v)
@@ -5749,7 +5728,7 @@ function library:colorpicker(properties)
 	end)
 
 	uis.InputEnded:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 			dragging_sat = false
 			dragging_hue = false
 			dragging_alpha = false
@@ -5759,9 +5738,9 @@ function library:colorpicker(properties)
 	uis.InputChanged:Connect(function(input)
 		if
 			(dragging_sat or dragging_hue or dragging_alpha)
-			and input.UserInputType == Enum.UserInputType.MouseMovement
+			and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch)
 		then
-			cfg.update_color()
+			cfg.update_color(input.Position)
 		end
 	end)
 
