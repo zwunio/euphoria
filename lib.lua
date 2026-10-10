@@ -2299,6 +2299,131 @@ end)
 		playerlist.Visible = false
 	end
 
+	if uis.TouchEnabled then
+		local mobile_holder = library:create("Frame", {
+			Parent = library.gui,
+			Name = "",
+			BackgroundTransparency = 1,
+			Position = UDim2.new(0, 20, 0, 68),
+			BorderColor3 = Color3.fromRGB(19, 19, 19),
+			ZIndex = 3,
+			AutomaticSize = Enum.AutomaticSize.X,
+			BackgroundColor3 = Color3.fromRGB(40, 40, 40),
+		end)
+
+		local mobile_btn = library:create("TextButton", {
+			Parent = mobile_holder,
+			Name = "",
+			Active = true,
+			Text = "",
+			AutoButtonColor = false,
+			BorderColor3 = Color3.fromRGB(0, 0, 0),
+			Size = UDim2.new(0, 70, 0, 40),
+			BackgroundColor3 = Color3.fromRGB(40, 40, 40),
+		end)
+		local mobile_accent = library:create("Frame", {
+			Parent = mobile_btn,
+			Name = "",
+			BorderColor3 = Color3.fromRGB(34, 34, 34),
+			Size = UDim2.new(1, 0, 0, 2),
+			BorderSizePixel = 0,
+			BackgroundColor3 = themes.preset.accent,
+		end)
+
+		library:apply_theme(mobile_accent, "accent", "BackgroundColor3")
+
+		local mobile_depth = library:create("Frame", {
+			Parent = mobile_btn,
+			Name = "",
+			BackgroundTransparency = 0.5,
+			Position = UDim2.new(0, 0, 0, 1),
+			BorderColor3 = Color3.fromRGB(0, 0, 0),
+			Size = UDim2.new(1, 0, 0, 1),
+			BorderSizePixel = 0,
+			BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+		end)
+
+		local mobile_inline2 = library:create("Frame", {
+			Parent = mobile_btn,
+			Name = "",
+			Position = UDim2.new(0, 2, 0, 2),
+			BorderColor3 = Color3.fromRGB(0, 0, 0),
+			Size = UDim2.new(1, -4, 1, -4),
+			BorderSizePixel = 0,
+			BackgroundColor3 = Color3.fromRGB(26, 26, 26),
+		end)
+
+		local mobile_main = library:create("Frame", {
+			Parent = mobile_inline2,
+			Name = "",
+			Position = UDim2.new(0, 2, 0, 2),
+			BorderColor3 = Color3.fromRGB(57, 57, 57),
+			Size = UDim2.new(1, -4, 1, -4),
+			BackgroundColor3 = Color3.fromRGB(26, 26, 26),
+		end)
+
+		local mobile_tab_inline = library:create("Frame", {
+			Parent = mobile_main,
+			Name = "",
+			Position = UDim2.new(0, 6, 0, 6),
+			BorderColor3 = Color3.fromRGB(19, 19, 19),
+			Size = UDim2.new(1, -12, 1, -12),
+			BorderSizePixel = 0,
+			BackgroundColor3 = Color3.fromRGB(19, 19, 19),
+		end)
+
+		local mobile_tabs = library:create("Frame", {
+			Parent = mobile_tab_inline,
+			Name = "",
+			Position = UDim2.new(0, 2, 0, 2),
+			BorderColor3 = Color3.fromRGB(56, 56, 56),
+			Size = UDim2.new(1, -4, 1, -4),
+			BackgroundColor3 = Color3.fromRGB(22, 22, 22),
+		end)
+
+		local mobile_label = library:create("TextLabel", {
+			Parent = mobile_tabs,
+			Name = "",
+			FontFace = library.font,
+			TextColor3 = Color3.fromRGB(170, 170, 170),
+			BorderColor3 = Color3.fromRGB(0, 0, 0),
+			Text = "menu",
+			TextStrokeTransparency = 0.5,
+			Size = UDim2.new(1, 0, 1, 0),
+			Position = UDim2.new(0, 0, 0, 0),
+			BackgroundTransparency = 1,
+			TextXAlignment = Enum.TextXAlignment.Center,
+			BorderSizePixel = 0,
+			TextSize = 12,
+			BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+		end)
+
+		local mobile_glow = library:create("ImageLabel", {
+			Parent = mobile_accent,
+			Name = "",
+			ImageColor3 = themes.preset.accent,
+			ScaleType = Enum.ScaleType.Slice,
+			ImageTransparency = 0.8999999761581421,
+			BorderColor3 = Color3.fromRGB(0, 0, 0),
+			BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+			Image = "http://www.roblox.com/asset/?id=18245826428",
+			BackgroundTransparency = 1,
+			Position = UDim2.new(0, -20, 0, -20),
+			Size = UDim2.new(1, 40, 0, 42),
+			ZIndex = 2,
+			BorderSizePixel = 0,
+			SliceCenter = Rect.new(Vector2.new(21, 21), Vector2.new(79, 79)),
+		end)
+
+		library:apply_theme(mobile_glow, "accent", "ImageColor3")
+
+		mobile_btn.InputBegan:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+				cfg.set_menu_visibility(not WINDOW_PATH.Visible)
+			end
+		end)
+	end
+
 	return setmetatable(cfg, library)
 end
 
