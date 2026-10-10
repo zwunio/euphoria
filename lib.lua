@@ -2309,7 +2309,7 @@ end)
 			ZIndex = 3,
 			AutomaticSize = Enum.AutomaticSize.X,
 			BackgroundColor3 = Color3.fromRGB(40, 40, 40),
-		end)
+		})
 
 		local mobile_btn = library:create("TextButton", {
 			Parent = mobile_holder,
@@ -2320,7 +2320,7 @@ end)
 			BorderColor3 = Color3.fromRGB(0, 0, 0),
 			Size = UDim2.new(0, 70, 0, 40),
 			BackgroundColor3 = Color3.fromRGB(40, 40, 40),
-		end)
+		})
 		local mobile_accent = library:create("Frame", {
 			Parent = mobile_btn,
 			Name = "",
@@ -2328,7 +2328,7 @@ end)
 			Size = UDim2.new(1, 0, 0, 2),
 			BorderSizePixel = 0,
 			BackgroundColor3 = themes.preset.accent,
-		end)
+		})
 
 		library:apply_theme(mobile_accent, "accent", "BackgroundColor3")
 
@@ -2341,7 +2341,7 @@ end)
 			Size = UDim2.new(1, 0, 0, 1),
 			BorderSizePixel = 0,
 			BackgroundColor3 = Color3.fromRGB(0, 0, 0),
-		end)
+		})
 
 		local mobile_inline2 = library:create("Frame", {
 			Parent = mobile_btn,
@@ -2351,7 +2351,7 @@ end)
 			Size = UDim2.new(1, -4, 1, -4),
 			BorderSizePixel = 0,
 			BackgroundColor3 = Color3.fromRGB(26, 26, 26),
-		end)
+		})
 
 		local mobile_main = library:create("Frame", {
 			Parent = mobile_inline2,
@@ -2360,7 +2360,7 @@ end)
 			BorderColor3 = Color3.fromRGB(57, 57, 57),
 			Size = UDim2.new(1, -4, 1, -4),
 			BackgroundColor3 = Color3.fromRGB(26, 26, 26),
-		end)
+		})
 
 		local mobile_tab_inline = library:create("Frame", {
 			Parent = mobile_main,
@@ -2370,7 +2370,7 @@ end)
 			Size = UDim2.new(1, -12, 1, -12),
 			BorderSizePixel = 0,
 			BackgroundColor3 = Color3.fromRGB(19, 19, 19),
-		end)
+		})
 
 		local mobile_tabs = library:create("Frame", {
 			Parent = mobile_tab_inline,
@@ -2379,7 +2379,7 @@ end)
 			BorderColor3 = Color3.fromRGB(56, 56, 56),
 			Size = UDim2.new(1, -4, 1, -4),
 			BackgroundColor3 = Color3.fromRGB(22, 22, 22),
-		end)
+		})
 
 		local mobile_label = library:create("TextLabel", {
 			Parent = mobile_tabs,
@@ -2396,7 +2396,7 @@ end)
 			BorderSizePixel = 0,
 			TextSize = 12,
 			BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-		end)
+		})
 
 		local mobile_glow = library:create("ImageLabel", {
 			Parent = mobile_accent,
@@ -2413,7 +2413,7 @@ end)
 			ZIndex = 2,
 			BorderSizePixel = 0,
 			SliceCenter = Rect.new(Vector2.new(21, 21), Vector2.new(79, 79)),
-		end)
+		})
 
 		library:apply_theme(mobile_glow, "accent", "ImageColor3")
 
