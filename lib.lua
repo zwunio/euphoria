@@ -5313,6 +5313,7 @@ function library:colorpicker(properties)
 		Position = UDim2.new(0, 2, 0, 2),
 		PlaceholderText = "r, g, b, a",
 		TextSize = 12,
+		ClearTextOnFocus = true,
 		BackgroundColor3 = Color3.fromRGB(38, 38, 38),
 	})
 
@@ -5608,13 +5609,15 @@ function library:colorpicker(properties)
 		)
 		icon.BackgroundColor3 = Color
 
-		__input.Text = math.floor(RGB_Format.R * 255)
-			.. ", "
-			.. math.floor(RGB_Format.G * 255)
-			.. ", "
-			.. math.floor(RGB_Format.B * 255)
-			.. ", "
-			.. library:round(a, 0.01)
+		if not __input:IsFocused() then
+			__input.Text = math.floor(RGB_Format.R * 255)
+				.. ", "
+				.. math.floor(RGB_Format.G * 255)
+				.. ", "
+				.. math.floor(RGB_Format.B * 255)
+				.. ", "
+				.. library:round(a, 0.01)
+		end
 		preview.BackgroundColor3 = Color
 		preview_image.ImageTransparency = 1 - a
 
